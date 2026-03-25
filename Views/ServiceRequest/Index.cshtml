@@ -1,0 +1,22 @@
+@model List<StoRvStar.Models.Entities.ServiceRequest>
+
+<h2>Список заявок</h2>
+
+<a href="/ServiceRequest/Create">Створити заявку</a>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Дата</th>
+        <th>Статус</th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.CreatedAt</td>
+        <td>@item.Status</td>
+    </tr>
+}
+</table>
