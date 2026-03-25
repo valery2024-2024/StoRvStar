@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StoRvStar")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+14903b57bd726cdc88847d02d67946a0991b0ef5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4972393ea9058e44dd3f70eeeccbda833ff41add")]
 [assembly: System.Reflection.AssemblyProductAttribute("StoRvStar")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StoRvStar")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
