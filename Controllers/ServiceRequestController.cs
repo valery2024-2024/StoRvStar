@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StoRvStar.Models.Entities;
 using StoRvStar.Services.Interfaces;
+using StoRvStar.Models.ViewModels;
 
 namespace StoRvStar.Controllers;
 
@@ -20,17 +21,35 @@ public class ServiceRequestController : Controller
         return View(requests);
     }
 
-    // форма створення
+    // GET - форма створення
     public IActionResult Create()
     {
-        return View();
+        var vm = new CreateServiceRequestVM
+        {
+            Cars = _service.GetCars(),
+            Services = _service.GetServices()
+        };
+
+        return View(vm);
     }
 
-    // збереження
+    // POST - форма збереження
     [HttpPost]
-    public IActionResult Create(ServiceRequest request)
+    public IActionResult Create(CreateServiceRequestVM vm)
     {
+        // створюємо заявку
+        var request = new ServiceRequest
+        {
+            CarId = vm.CarId,
+            UserId = vm.UserId,
+            CreatedAt = DateTime.Now,
+            Status = "New"
+        };
+
+        // створюємо заявку
         _service.Create(request);
+
+
         return RedirectToAction("Index");
     }
 }

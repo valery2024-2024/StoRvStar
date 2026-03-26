@@ -1,17 +1,37 @@
-@model StoRvStar.Models.Entities.ServiceRequest
+@model StoRvStar.Models.ViewModels.CreateServiceRequestVM
 
 <h2>Створити заявку</h2>
 
 <form method="post">
-    <label>CarId:</label>
-    <input type="number" name="CarId" />
+    <label>Оберіть авто:</label>
+    <select name="CarId">
+        @foreach (var car in Model.Cars)
+        {
+            <option value="@car.Id">@car.Brand @car.Model (@car.PlateNumber)</option>
+        }
+    </select>
 
+    <br />
     <br />
 
     <label>UserId:</label>
     <input type="number" name="UserId" />
 
-    <br /><br />
+    <br />
+    <br />
 
-    <button type="submit">Зберегти</button>
+    <label>Оберіть послуги:</label>
+    <br />
+
+    @foreach (var service in Model.Services)
+    {
+        <div>
+            <input type="checkbox" name="SelectedServices" value="@service.Id" />
+            <span>@service.Name - @service.Price грн</span>
+        </div>
+    }
+
+    <br />
+
+    <button type="submit">Створити</button>
 </form>

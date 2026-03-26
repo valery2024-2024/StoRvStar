@@ -23,6 +23,16 @@ public class ServiceRequestService : IServiceRequestService
         return _context.ServiceRequests.FirstOrDefault(x => x.Id == id);
     }
 
+    public List<Service> GetServices()
+    {
+        return _context.Services.ToList();
+    }
+
+    public List<Car> GetCars()
+    {
+        return _context.Cars.ToList();
+    }
+
     public void Create(ServiceRequest request)
     {
         request.CreatedAt = DateTime.Now;
