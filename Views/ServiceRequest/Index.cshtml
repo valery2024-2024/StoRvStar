@@ -2,21 +2,43 @@
 
 <h2>Список заявок</h2>
 
-<a href="/ServiceRequest/Create">Створити заявку</a>
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Авто</th>
+            <th>Послуги</th>
+            <th>Сума</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Id</td>
 
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Дата</th>
-        <th>Статус</th>
-    </tr>
+                <td>
+                    @r.Car?.Brand @r.Car?.Model
+                </td>
 
-@foreach (var item in Model)
-{
-    <tr>
-        <td>@item.Id</td>
-        <td>@item.CreatedAt</td>
-        <td>@item.Status</td>
-    </tr>
-}
+                <td>
+                    @foreach (var item in r.ServiceItems)
+                    {
+                        <div>
+                            • @item.Service?.Name (@item.Service?.Price грн)
+                        </div>
+                    }
+                </td>
+
+                <td>
+                    <b>@r.TotalPrice грн</b>
+                </td>
+
+                <td>
+                    @r.Status
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

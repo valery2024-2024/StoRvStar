@@ -1,6 +1,7 @@
 using StoRvStar.Data;
 using StoRvStar.Models.Entities;
 using StoRvStar.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace StoRvStar.Services;
 
@@ -15,7 +16,11 @@ public class ServiceRequestService : IServiceRequestService
 
     public List<ServiceRequest> GetAll()
     {
-        return _context.ServiceRequests.ToList();
+        return _context.ServiceRequests
+            .Include(r => r.Car)
+            .Include(r => r.ServiceItems)
+                .ThenInclude(si => si.Service)
+            .ToList();
     }
 
     public ServiceRequest GetById(int id)
