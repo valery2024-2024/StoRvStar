@@ -33,12 +33,32 @@ public class ServiceRequestService : IServiceRequestService
         return _context.Cars.ToList();
     }
 
-    public void Create(ServiceRequest request)
+    public void Create(ServiceRequest request, List<int> selectedServices)
     {
         request.CreatedAt = DateTime.Now;
         request.Status = "New";
 
         _context.ServiceRequests.Add(request);
+        _context.SaveChanges();
+
+        decimal total = 0;
+
+        foreach (var serviceId in selectedServices)
+        {
+            var service = _context.Services.FirstOrDefault(s => s.Id == serviceId);
+
+            if (service != null)total += service.Price;
+
+            var item = new ServiceItem
+            {
+                ServiceRequestId = request.Id,
+                ServiceId = serviceId
+            };
+
+            _context.ServiceItems.Add(item);
+        }
+        request.TotalPrice = total;
+
         _context.SaveChanges();
     }
 }

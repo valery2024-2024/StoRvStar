@@ -8,5 +8,5 @@ public interface IServiceRequestService
     ServiceRequest GetById(int id);
     List<Service> GetServices();
     List<Car> GetCars();
-    void Create(ServiceRequest request);
+    void Create(ServiceRequest request, List<int> selectedServices);
 }

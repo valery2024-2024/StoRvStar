@@ -12,7 +12,8 @@ public class ServiceRequest
 
     public int UserId { get; set; }
     public User User { get; set; }
+    public decimal TotalPrice { get; set; }
 
     // Navigation
-    public List<ServiceItem> ServiceItems { get; set; }
+    public List<ServiceItem> ServiceItems { get; set; } = new();
 }

@@ -47,7 +47,7 @@ public class ServiceRequestController : Controller
         };
 
         // створюємо заявку
-        _service.Create(request);
+        _service.Create(request, vm.SelectedServices);
 
 
         return RedirectToAction("Index");
