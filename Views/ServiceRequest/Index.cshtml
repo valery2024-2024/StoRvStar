@@ -1,44 +1,73 @@
 @model List<StoRvStar.Models.Entities.ServiceRequest>
 
-<h2>Список заявок</h2>
+<div class="container mt-4">
 
-<table border="1" cellpadding="10">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Авто</th>
-            <th>Послуги</th>
-            <th>Сума</th>
-            <th>Статус</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var r in Model)
-        {
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Список заявок</h2>
+        <a href="/ServiceRequest/Create" class="btn btn-primary">
+            + Створити заявку
+        </a>
+    </div>
+
+    <table class="table table-bordered table-hover shadow">
+        <thead class="table-dark">
             <tr>
-                <td>@r.Id</td>
-
-                <td>
-                    @r.Car?.Brand @r.Car?.Model
-                </td>
-
-                <td>
-                    @foreach (var item in r.ServiceItems)
-                    {
-                        <div>
-                            • @item.Service?.Name (@item.Service?.Price грн)
-                        </div>
-                    }
-                </td>
-
-                <td>
-                    <b>@r.TotalPrice грн</b>
-                </td>
-
-                <td>
-                    @r.Status
-                </td>
+                <th>ID</th>
+                <th>Авто</th>
+                <th>Послуги</th>
+                <th>Сума</th>
+                <th>Статус</th>
+                <th>Дії</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.Id</td>
+
+                    <td>
+                        <b>@r.Car?.Brand @r.Car?.Model</b>
+                    </td>
+
+                    <td>
+                        @foreach (var item in r.ServiceItems)
+                        {
+                            <span class="badge bg-secondary me-1">
+                                @item.Service?.Name
+                            </span>
+                        }
+                    </td>
+
+                    <td>
+                        <span class="fw-bold text-success">
+                            @r.TotalPrice грн
+                        </span>
+                    </td>
+
+                    <td>
+                        @{
+                            string statusClass = r.Status switch
+                            {
+                                "New" => "bg-primary",
+                                "InProgress" => "bg-warning text-dark",
+                                "Done" => "bg-success",
+                                _ => "bg-secondary"
+                            };
+                        }
+
+                        <span class="badge @statusClass">
+                            @r.Status
+                        </span>
+                    </td>
+
+                    <td>
+                        <button class="btn btn-sm btn-warning">Edit</button>
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
