@@ -41,7 +41,7 @@
 
                     <td>
                         <span class="fw-bold text-success">
-                            @r.TotalPrice грн
+                            @($"{r.TotalPrice} грн")
                         </span>
                     </td>
 
@@ -62,8 +62,24 @@
                     </td>
 
                     <td>
-                        <button class="btn btn-sm btn-warning">Edit</button>
-                        <button class="btn btn-sm btn-danger">Delete</button>
+                        @if (r.Status == "New")
+                        {
+                            <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=InProgress"
+                               class="btn btn-sm btn-warning">
+                                В роботу
+                            </a>
+                        }
+                        else if (r.Status == "InProgress")
+                        {
+                            <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=Done"
+                               class="btn btn-sm btn-success">
+                                Готово
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Завершено</span>
+                        }
                     </td>
                 </tr>
             }

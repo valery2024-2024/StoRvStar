@@ -66,4 +66,15 @@ public class ServiceRequestService : IServiceRequestService
 
         _context.SaveChanges();
     }
+    public void UpdateStatus(int id, string status)
+    {
+        var request = _context.ServiceRequests.FirstOrDefault(r => r.Id == id);
+
+        if (request != null)
+        {
+            request.Status = status;
+            _context.SaveChanges();
+        }
+    }
+
 }

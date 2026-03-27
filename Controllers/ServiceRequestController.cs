@@ -33,6 +33,12 @@ public class ServiceRequestController : Controller
         return View(vm);
     }
 
+    public IActionResult UpdateStatus(int id, string status)
+    {
+        _service.UpdateStatus(id, status);
+        return RedirectToAction("Index");
+    }
+
     // POST - форма збереження
     [HttpPost]
     public IActionResult Create(CreateServiceRequestVM vm)

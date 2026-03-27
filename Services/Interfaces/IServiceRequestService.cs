@@ -9,4 +9,5 @@ public interface IServiceRequestService
     List<Service> GetServices();
     List<Car> GetCars();
     void Create(ServiceRequest request, List<int> selectedServices);
+    void UpdateStatus(int id, string status);
 }
