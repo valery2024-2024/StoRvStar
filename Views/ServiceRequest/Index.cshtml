@@ -4,8 +4,9 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Список заявок</h2>
+
         <a href="/ServiceRequest/Create" class="btn btn-primary">
-            + Створити заявку
+            + Нова заявка
         </a>
     </div>
 
@@ -13,13 +14,16 @@
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
+                <th>Клієнт</th>
                 <th>Авто</th>
                 <th>Послуги</th>
                 <th>Сума</th>
                 <th>Статус</th>
+                <th>Дата</th>
                 <th>Дії</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (var r in Model)
             {
@@ -27,7 +31,13 @@
                     <td>@r.Id</td>
 
                     <td>
-                        <b>@r.Car?.Brand @r.Car?.Model</b>
+                        @r.User?.Name <br />
+                        <small>@r.User?.Phone</small>
+                    </td>
+
+                    <td>
+                        <b>@r.Car?.Brand @r.Car?.Model</b><br />
+                        <small>@r.Car?.PlateNumber</small>
                     </td>
 
                     <td>
@@ -62,6 +72,10 @@
                     </td>
 
                     <td>
+                        @r.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+                    </td>
+
+                    <td>
                         @if (r.Status == "New")
                         {
                             <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=InProgress"
@@ -73,17 +87,18 @@
                         {
                             <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=Done"
                                class="btn btn-sm btn-success">
-                                Готово
+                                Завершити
                             </a>
                         }
                         else
                         {
-                            <span class="text-muted">Завершено</span>
+                            <span class="text-muted">Готово</span>
                         }
                     </td>
                 </tr>
             }
         </tbody>
+
     </table>
 
 </div>
