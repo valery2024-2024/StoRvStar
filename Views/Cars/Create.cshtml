@@ -1,0 +1,41 @@
+@model StoRvStar.Models.Entities.Car
+
+<div class="container mt-4">
+    <h2>Додати авто</h2>
+
+    <form method="post" class="card p-4 shadow">
+
+        <div class="mb-3">
+            <label>Марка</label>
+            <input asp-for="Brand" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Модель</label>
+            <input asp-for="Model" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Рік</label>
+            <input asp-for="Year" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Номер</label>
+            <input asp-for="PlateNumber" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Клієнт</label>
+            <select asp-for="UserId" class="form-select" required>
+                <option value="">Виберіть клієнта</option>
+                @foreach (var user in ViewBag.Users)
+                {
+                    <option value="@user.Id">@user.Name</option>
+                }
+            </select>
+        </div>
+
+        <button class="btn btn-success">Зберегти</button>
+    </form>
+</div>

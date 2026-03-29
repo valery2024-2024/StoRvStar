@@ -66,6 +66,16 @@
                             };
                         }
 
+                        @{
+                            string statusText = r.Status switch
+                            {
+                                "New" => "Нова",
+                                "InProgress" => "В роботі",
+                                "Done" => "Готово",
+                                _ => r.Status
+                            };
+                        }
+
                         <span class="badge @statusClass">
                             @r.Status
                         </span>
@@ -104,7 +114,7 @@
 
                         <!--DELETE-->
                         <a href="/ServiceRequest/Delete/@r.Id"
-                           class="btn btn-sm btn-online-danger"
+                           class="btn btn-sm btn-outline-danger"
                            onclick="return confirm('Видалити заявку?')">
                            Видалити
                         </a>

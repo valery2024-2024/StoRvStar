@@ -1,4 +1,5 @@
 @model StoRvStar.Models.ViewModels.CreateServiceRequestVM
+@using System.Text.Json
 
 <div class="container mt-4">
     <h2 class="mb-4">Створити заявку</h2>
@@ -7,8 +8,8 @@
 
         <div class="mb-3">
             <label class="form-label">Клієнт</label>
-            <select asp-for="SelectedUserId" class="form-select" required>
-                <option value="">виберіть клієнта</option>
+            <select asp-for="SelectedUserId" class="form-select" id="userSelect" required>
+                <option value="">Виберіть клієнта</option>
                 @foreach (var user in Model.Users)
                 {
                     <option value="@user.Id">@user.Name (@user.Phone)</option>
@@ -18,14 +19,8 @@
 
         <div class="mb-3">
             <label class="form-label">Авто</label>
-            <select asp-for="SelectedCarId" class="form-select" required>
+            <select asp-for="SelectedCarId" class="form-select" id="carSelect" required>
                 <option value="">Виберіть авто</option>
-                @foreach (var car in Model.Cars)
-                {
-                    <option value="@car.Id">
-                        @car.Brand @car.Model (@car.PlateNumber)
-                    </option>
-                }
             </select>
         </div>
 
@@ -67,18 +62,50 @@
 <script>
     const checkboxes = document.querySelectorAll('.service-checkbox');
     const totalEl = document.getElementById('total');
+    const userSelect = document.getElementById('userSelect');
+    const carSelect = document.getElementById('carSelect');
+
+    const allCars = @Html.Raw(JsonSerializer.Serialize(
+        Model.Cars.Select(c => new
+        {
+            id = c.Id,
+            brand = c.Brand,
+            model = c.Model,
+            plateNumber = c.PlateNumber,
+            userId = c.UserId
+        })
+    ));
+
+    function updateTotal() {
+        let total = 0;
+
+        checkboxes.forEach(c => {
+            if (c.checked) {
+                total += parseFloat(c.dataset.price);
+            }
+        });
+
+        totalEl.textContent = total;
+    }
 
     checkboxes.forEach(cb => {
-        cb.addEventListener('change', () => {
-            let total = 0;
+        cb.addEventListener('change', updateTotal);
+    });
 
-            checkboxes.forEach(c => {
-                if (c.checked) {
-                    total += parseFloat(c.dataset.price);
-                }
-            });
+    userSelect.addEventListener('change', function () {
+        const userId = parseInt(this.value);
 
-            totalEl.textContent = total;
+        carSelect.innerHTML = '<option value="">Виберіть авто</option>';
+
+        if (!userId) return;
+
+        const filteredCars = allCars.filter(c => c.userId === userId);
+
+        filteredCars.forEach(car => {
+            const option = document.createElement('option');
+            option.value = car.id;
+            option.text = `${car.brand} ${car.model} (${car.plateNumber})`;
+            carSelect.appendChild(option);
         });
     });
 </script>

@@ -17,6 +17,7 @@ public class ServiceRequestService : IServiceRequestService
     public List<ServiceRequest> GetAll()
     {
         return _context.ServiceRequests
+            .Include(r => r.User)
             .Include(r => r.Car)
             .Include(r => r.ServiceItems)
                 .ThenInclude(si => si.Service)

@@ -1,0 +1,36 @@
+@model List<StoRvStar.Models.Entities.Car>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Авто</h2>
+
+        <a href="/Cars/Create" class="btn btn-primary">
+            + Додати авто
+        </a>
+    </div>
+
+    <table class="table table-bordered shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Клієнт</th>
+                <th>Авто</th>
+                <th>Номер</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var car in Model)
+            {
+                <tr>
+                    <td>@car.Id</td>
+                    <td>@car.User?.Name</td>
+                    <td>@car.Brand @car.Model (@car.Year)</td>
+                    <td>@car.PlateNumber</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
