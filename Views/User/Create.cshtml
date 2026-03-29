@@ -1,0 +1,22 @@
+@model StoRvStar.Models.Entities.User
+
+<div class="container mt-4">
+
+    <h2>Створити клієнта</h2>
+
+    <form method="post">
+
+        <div class="mb-3">
+            <label>Ім'я</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Телефон</label>
+            <input asp-for="Phone" class="form-control" />
+        </div>
+
+        <button class="btn btn-success">Зберегти</button>
+
+    </form>
+</div>

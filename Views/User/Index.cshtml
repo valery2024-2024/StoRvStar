@@ -1,0 +1,31 @@
+@model List<StoRvStar.Models.Entities.User>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Клієнти</h2>
+        <a href="/User/Create" class="btn btn-primary">+ Додати клієнта</a>
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Ім'я</th>
+                <th>Телефон</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td>@u.Id</td>
+                    <td>@u.Name</td>
+                    <td>@u.Phone</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

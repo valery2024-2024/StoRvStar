@@ -2,16 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using StoRvStar.Models.Entities;
 using StoRvStar.Services.Interfaces;
 using StoRvStar.Models.ViewModels;
+using StoRvStar.Data;
 
 namespace StoRvStar.Controllers;
 
 public class ServiceRequestController : Controller
 {
     private readonly IServiceRequestService _service;
+    private readonly AppDbContext _context;
 
-    public ServiceRequestController(IServiceRequestService service)
+    public ServiceRequestController(IServiceRequestService service, AppDbContext context)
     {
         _service = service;
+        _context = context;
     }
 
     // список заявок
@@ -27,7 +30,8 @@ public class ServiceRequestController : Controller
         var vm = new CreateServiceRequestVM
         {
             Cars = _service.GetCars(),
-            Services = _service.GetServices()
+            Services = _service.GetServices(),
+            Users = _context.Users.ToList()
         };
 
         return View(vm);
@@ -58,4 +62,5 @@ public class ServiceRequestController : Controller
 
         return RedirectToAction("Index");
     }
+    
 }
