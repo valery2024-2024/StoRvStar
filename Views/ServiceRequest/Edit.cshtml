@@ -1,0 +1,91 @@
+@model StoRvStar.Models.ViewModels.CreateServiceRequestVM
+
+<div class="container mt-4">
+    <h2 class="mb-4">Редагувати заявку</h2>
+
+    <form method="post" asp-action="Edit" asp-route-id="@ViewBag.Id" class="card p-4 shadow">
+
+        <div class="mb-3">
+            <label class="form-label">Клієнт</label>
+            <select asp-for="SelectedUserId" class="form-select" required>
+                <option value="">Виберіть клієнта</option>
+                @foreach (var user in Model.Users)
+                {
+                    <option value="@user.Id">@user.Name (@user.Phone)</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Авто</label>
+            <select asp-for="SelectedCarId" class="form-select" required>
+                <option value="">Виберіть авто</option>
+                @foreach (var car in Model.Cars)
+                {
+                    <option value="@car.Id">
+                        @car.Brand @car.Model (@car.PlateNumber)
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Послуги</label>
+
+            @foreach (var service in Model.Services)
+            {
+                <div class="form-check">
+                    <input class="form-check-input service-checkbox"
+                           type="checkbox"
+                           name="SelectedServiceIds"
+                           value="@service.Id"
+                           data-price="@service.Price"
+                           @(Model.SelectedServiceIds.Contains(service.Id) ? "checked" : "") />
+
+                    <label class="form-check-label">
+                        @service.Name (@service.Price грн)
+                    </label>
+                </div>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Опис</label>
+            <input asp-for="Description" class="form-control" />
+        </div>
+
+        <Сума>
+        <div class="mb-3">
+            <h4>Сума: <span id="total">0</span> грн</h4>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Зберегти
+        </button>
+
+    </form>
+</div>
+
+<script>
+    const checkboxes = document.querySelectorAll('.service-checkbox');
+    const totalEl = document.getElementById('total');
+
+    function calculateTotal() {
+        let total = 0;
+
+        checkboxes.forEach(c => {
+            if (c.checked) {
+                total += parseFloat(c.dataset.price);
+            }
+        });
+
+        totalEl.textContent = total;
+    }
+
+    // перерахунок при зміні
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', calculateTotal);
+    });
+
+    calculateTotal();
+</script>

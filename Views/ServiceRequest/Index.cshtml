@@ -76,24 +76,38 @@
                     </td>
 
                     <td>
+                        <!--статус-->
                         @if (r.Status == "New")
                         {
                             <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=InProgress"
-                               class="btn btn-sm btn-warning">
+                               class="btn btn-sm btn-warning mb-1">
                                 В роботу
                             </a>
                         }
                         else if (r.Status == "InProgress")
                         {
                             <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=Done"
-                               class="btn btn-sm btn-success">
+                               class="btn btn-sm btn-success mb-1">
                                 Завершити
                             </a>
                         }
                         else
                         {
-                            <span class="text-muted">Готово</span>
+                            <div class="text-muted mb-1">Готово</div>
                         }
+
+                        <!--EDIT-->
+                        <a href="/ServiceRequest/Edit/@r.Id"
+                           class="btn btn-sm btn-outline-primary mb-1">
+                           Редагувати
+                        </a>
+
+                        <!--DELETE-->
+                        <a href="/ServiceRequest/Delete/@r.Id"
+                           class="btn btn-sm btn-online-danger"
+                           onclick="return confirm('Видалити заявку?')">
+                           Видалити
+                        </a>
                     </td>
                 </tr>
             }
