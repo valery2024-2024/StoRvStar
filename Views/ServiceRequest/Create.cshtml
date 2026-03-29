@@ -1,37 +1,84 @@
 @model StoRvStar.Models.ViewModels.CreateServiceRequestVM
 
-<h2>Створити заявку</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Створити заявку</h2>
 
-<form method="post">
-    <label>Оберіть авто:</label>
-    <select name="CarId">
-        @foreach (var car in Model.Cars)
-        {
-            <option value="@car.Id">@car.Brand @car.Model (@car.PlateNumber)</option>
-        }
-    </select>
+    <form method="post" class="card p-4 shadow">
 
-    <br />
-    <br />
-
-    <label>UserId:</label>
-    <input type="number" name="UserId" />
-
-    <br />
-    <br />
-
-    <label>Оберіть послуги:</label>
-    <br />
-
-    @foreach (var service in Model.Services)
-    {
-        <div>
-            <input type="checkbox" name="SelectedServices" value="@service.Id" />
-            <span>@service.Name - @service.Price грн</span>
+        <div class="mb-3">
+            <label class="form-label">Клієнт</label>
+            <select asp-for="SelectedUserId" class="form-select" required>
+                <option value="">виберіть клієнта</option>
+                @foreach (var user in Model.Users)
+                {
+                    <option value="@user.Id">@user.Name (@user.Phone)</option>
+                }
+            </select>
         </div>
-    }
 
-    <br />
+        <div class="mb-3">
+            <label class="form-label">Авто</label>
+            <select asp-for="SelectedCarId" class="form-select" required>
+                <option value="">Виберіть авто</option>
+                @foreach (var car in Model.Cars)
+                {
+                    <option value="@car.Id">
+                        @car.Brand @car.Model (@car.PlateNumber)
+                    </option>
+                }
+            </select>
+        </div>
 
-    <button type="submit">Створити</button>
-</form>
+        <div class="mb-3">
+            <label class="form-label">Послуги</label>
+
+            @foreach (var service in Model.Services)
+            {
+                <div class="form-check">
+                    <input class="form-check-input service-checkbox"
+                           type="checkbox"
+                           name="SelectedServiceIds"
+                           value="@service.Id"
+                           data-price="@service.Price" />
+
+                    <label class="form-check-label">
+                        @service.Name (@service.Price грн)
+                    </label>
+                </div>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Опис</label>
+            <input asp-for="Description" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <h4>💰 Сума: <span id="total">0</span> грн</h4>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Створити
+        </button>
+
+    </form>
+</div>
+
+<script>
+    const checkboxes = document.querySelectorAll('.service-checkbox');
+    const totalEl = document.getElementById('total');
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            let total = 0;
+
+            checkboxes.forEach(c => {
+                if (c.checked) {
+                    total += parseFloat(c.dataset.price);
+                }
+            });
+
+            totalEl.textContent = total;
+        });
+    });
+</script>

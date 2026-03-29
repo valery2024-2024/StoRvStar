@@ -50,15 +50,38 @@ public class ServiceRequestController : Controller
         // створюємо заявку
         var request = new ServiceRequest
         {
-            CarId = vm.CarId,
-            UserId = vm.UserId,
+            CarId = vm.SelectedCarId,
+            UserId = vm.SelectedUserId,
+            Description = vm.Description,
             CreatedAt = DateTime.Now,
             Status = "New"
         };
 
-        // створюємо заявку
-        _service.Create(request, vm.SelectedServices);
+        _context.ServiceRequests.Add(request);
+        _context.SaveChanges();
 
+        decimal total = 0;
+
+        foreach (var serviceId in vm.SelectedServiceIds)
+        {
+            var service = _context.Services.Find(serviceId);
+
+            var price = service?.Price ?? 0;
+            total += price;
+
+            var item = new ServiceItem
+            {
+                ServiceRequestId = request.Id,
+                ServiceId = serviceId,
+                Price = price
+            };
+
+            _context.ServiceItems.Add(item);
+        }
+
+        request.TotalPrice = total;
+
+        _context.SaveChanges();
 
         return RedirectToAction("Index");
     }

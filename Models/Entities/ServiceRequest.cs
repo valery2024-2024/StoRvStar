@@ -5,7 +5,8 @@ public class ServiceRequest
     public int Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
-    public string Status { get; set; } // New / InProgress / Completed
+    public string Status { get; set; }
+    public string? Description { get; set; } // New / InProgress / Completed
 
     public int CarId { get; set; }
     public Car Car { get; set; }
