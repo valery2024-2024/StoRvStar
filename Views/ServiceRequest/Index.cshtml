@@ -1,4 +1,4 @@
-@model List<StoRvStar.Models.Entities.ServiceRequest>
+@model List<StoRvStar.Models.ViewModels.ServiceRequestItemVM>
 
 <div class="container mt-4">
 
@@ -31,20 +31,20 @@
                     <td>@r.Id</td>
 
                     <td>
-                        @r.User?.Name <br />
-                        <small>@r.User?.Phone</small>
+                        @r.ClientName <br />
+                        <small>@r.ClientPhone</small>
                     </td>
 
                     <td>
-                        <b>@r.Car?.Brand @r.Car?.Model</b><br />
-                        <small>@r.Car?.PlateNumber</small>
+                        <b>@r.CarName</b><br />
+                        <small>@r.PlateNumber</small>
                     </td>
 
                     <td>
-                        @foreach (var item in r.ServiceItems)
+                        @foreach (var serviceName in r.Services)
                         {
                             <span class="badge bg-secondary me-1">
-                                @item.Service?.Name
+                                @serviceName
                             </span>
                         }
                     </td>
@@ -66,18 +66,8 @@
                             };
                         }
 
-                        @{
-                            string statusText = r.Status switch
-                            {
-                                "New" => "Нова",
-                                "InProgress" => "В роботі",
-                                "Done" => "Готово",
-                                _ => r.Status
-                            };
-                        }
-
                         <span class="badge @statusClass">
-                            @r.Status
+                            @r.StatusText
                         </span>
                     </td>
 
@@ -86,7 +76,6 @@
                     </td>
 
                     <td>
-                        <!--статус-->
                         @if (r.Status == "New")
                         {
                             <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=InProgress"
@@ -106,13 +95,16 @@
                             <div class="text-muted mb-1">Готово</div>
                         }
 
-                        <!--EDIT-->
+                        <a href="/ServiceRequest/Details/@r.Id"
+                           class="btn btn-sm btn-info mb-1 text-white">
+                           Деталі
+                        </a>
+
                         <a href="/ServiceRequest/Edit/@r.Id"
                            class="btn btn-sm btn-outline-primary mb-1">
                            Редагувати
                         </a>
 
-                        <!--DELETE-->
                         <a href="/ServiceRequest/Delete/@r.Id"
                            class="btn btn-sm btn-outline-danger"
                            onclick="return confirm('Видалити заявку?')">
