@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using StoRvStar.Data;
@@ -5,6 +6,7 @@ using StoRvStar.Models.Entities;
 
 namespace StoRvStar.Controllers;
 
+[Authorize]
 public class CarsController : Controller
 {
     private readonly AppDbContext _context;

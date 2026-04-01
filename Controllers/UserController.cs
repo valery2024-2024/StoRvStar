@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoRvStar.Data;
 using StoRvStar.Models.Entities;
 
 namespace StoRvStar.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly AppDbContext _context;

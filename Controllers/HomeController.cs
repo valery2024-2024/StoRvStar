@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using StoRvStar.Models;
 
 namespace StoRvStar.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     public IActionResult Index()

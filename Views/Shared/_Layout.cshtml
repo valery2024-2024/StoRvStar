@@ -40,6 +40,35 @@
                             <a class="nav-link text-dark" asp-controller="Cars" asp-action="Create">Додати авто</a>
                         </li>
                     </ul>
+
+                    <ul class="navbar-nav">
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                               <span class="nav-link text-primary fw-bold">
+                                   @User.Identity.Name
+                               </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    <button class="btn btn-outline-danger ms-2">
+                                        Вийти
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">
+                                    Увійти
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
                 </div>
             </div>
         </nav>

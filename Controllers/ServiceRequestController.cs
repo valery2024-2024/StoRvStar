@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoRvStar.Services.Interfaces;
 using StoRvStar.Models.ViewModels;
 
 namespace StoRvStar.Controllers;
 
+[Authorize]
 public class ServiceRequestController : Controller
 {
     private readonly IServiceRequestService _service;
