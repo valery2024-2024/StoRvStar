@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "XkGt5/DSoIk=",
+  "dgSpecHash": "RWbiP6YnWNk=",
   "success": true,
   "projectFilePath": "D:\\Projects\\StoRvStar\\StoRvStar.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PowerUser\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\PowerUser\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.5\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.5.nupkg.sha512",
     "C:\\Users\\PowerUser\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
     "C:\\Users\\PowerUser\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.11.0\\microsoft.codeanalysis.analyzers.3.11.0.nupkg.sha512",
     "C:\\Users\\PowerUser\\.nuget\\packages\\microsoft.codeanalysis.common\\5.0.0\\microsoft.codeanalysis.common.5.0.0.nupkg.sha512",
