@@ -5,7 +5,7 @@ using StoRvStar.Models.ViewModels;
 
 namespace StoRvStar.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin,Manager")]
 public class ServiceRequestController : Controller
 {
     private readonly IServiceRequestService _service;
@@ -48,6 +48,7 @@ public class ServiceRequestController : Controller
 
     // POST - створення
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Create(CreateServiceRequestVM vm)
     {
         _service.Create(vm);
@@ -69,6 +70,7 @@ public class ServiceRequestController : Controller
 
     // EDIT - POST
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Edit(int id, CreateServiceRequestVM vm)
     {
         _service.Update(id, vm);
@@ -76,6 +78,8 @@ public class ServiceRequestController : Controller
     }
 
     // DELETE
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Delete(int id)
     {
         _service.Delete(id);
@@ -83,8 +87,17 @@ public class ServiceRequestController : Controller
     }
 
     // зміна статусу
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult UpdateStatus(int id, string status)
     {
+        var allowedStatuses = new[] { "InProgress", "Done" };
+
+        if (!allowedStatuses.Contains(status))
+        {
+            return BadRequest();
+        }
+
         _service.UpdateStatus(id, status);
         return RedirectToAction("Index");
     }
