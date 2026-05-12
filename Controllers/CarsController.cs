@@ -6,7 +6,7 @@ using StoRvStar.Models.Entities;
 
 namespace StoRvStar.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin,Manager")]
 public class CarsController : Controller
 {
     private readonly AppDbContext _context;
@@ -32,8 +32,15 @@ public class CarsController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Create(Car car)
     {
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Users = _context.Users.ToList();
+            return View(car);
+        }
+
         _context.Cars.Add(car);
         _context.SaveChanges();
 
