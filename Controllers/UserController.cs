@@ -5,7 +5,7 @@ using StoRvStar.Models.Entities;
 
 namespace StoRvStar.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Manager")]
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
@@ -27,11 +27,17 @@ namespace StoRvStar.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
             user.Username = user.Name;
             user.Role = "User";
-            
+
             _context.Users.Add(user);
             _context.SaveChanges();
 
