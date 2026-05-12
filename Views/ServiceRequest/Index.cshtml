@@ -78,17 +78,25 @@
                     <td>
                         @if (r.Status == "New")
                         {
-                            <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=InProgress"
-                               class="btn btn-sm btn-warning mb-1">
-                                В роботу
-                            </a>
+                            <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <input type="hidden" name="status" value="InProgress" />
+                                <button type="submit" class="btn btn-sm btn-warning mb-1">
+                                    В роботу
+                                </button>
+                            </form>
                         }
                         else if (r.Status == "InProgress")
                         {
-                            <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=Done"
-                               class="btn btn-sm btn-success mb-1">
-                                Завершити
-                            </a>
+                            <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <input type="hidden" name="status" value="Done" />
+                                <button type="submit" class="btn btn-sm btn-success mb-1">
+                                    Завершити
+                                </button>
+                            </form>
                         }
                         else
                         {
@@ -105,11 +113,16 @@
                            Редагувати
                         </a>
 
-                        <a href="/ServiceRequest/Delete/@r.Id"
-                           class="btn btn-sm btn-outline-danger"
-                           onclick="return confirm('Видалити заявку?')">
-                           Видалити
-                        </a>
+                        <form asp-action="Delete"
+                              method="post"
+                              class="d-inline"
+                              onsubmit="return confirm('Видалити заявку?')">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@r.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                Видалити
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }
