@@ -32,11 +32,26 @@ public class CarsController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Create(Car car)
     {
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Users = _context.Users.ToList();
+            return View(car);
+        }
+
+        var userExists = _context.Users.Any(u => u.Id == car.UserId);
+        if (!userExists)
+        {
+            ModelState.AddModelError(nameof(car.UserId), "Оберіть існуючого клієнта");
+            ViewBag.Users = _context.Users.ToList();
+            return View(car);
+        }
+
         _context.Cars.Add(car);
         _context.SaveChanges();
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 }

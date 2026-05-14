@@ -1,11 +1,10 @@
 @model List<StoRvStar.Models.ViewModels.ServiceRequestItemVM>
 
 <div class="container mt-4">
-
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Список заявок</h2>
 
-        <a href="/ServiceRequest/Create" class="btn btn-primary">
+        <a asp-controller="ServiceRequest" asp-action="Create" class="btn btn-primary">
             + Нова заявка
         </a>
     </div>
@@ -57,7 +56,7 @@
 
                     <td>
                         @{
-                            string statusClass = r.Status switch
+                            var statusClass = r.Status switch
                             {
                                 "New" => "bg-primary",
                                 "InProgress" => "bg-warning text-dark",
@@ -78,43 +77,45 @@
                     <td>
                         @if (r.Status == "New")
                         {
-                            <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=InProgress"
-                               class="btn btn-sm btn-warning mb-1">
-                                В роботу
-                            </a>
+                            <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <input type="hidden" name="status" value="InProgress" />
+                                <button type="submit" class="btn btn-sm btn-warning mb-1">В роботу</button>
+                            </form>
                         }
                         else if (r.Status == "InProgress")
                         {
-                            <a href="/ServiceRequest/UpdateStatus?id=@r.Id&status=Done"
-                               class="btn btn-sm btn-success mb-1">
-                                Завершити
-                            </a>
+                            <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <input type="hidden" name="status" value="Done" />
+                                <button type="submit" class="btn btn-sm btn-success mb-1">Завершити</button>
+                            </form>
                         }
                         else
                         {
                             <div class="text-muted mb-1">Готово</div>
                         }
 
-                        <a href="/ServiceRequest/Details/@r.Id"
+                        <a asp-controller="ServiceRequest" asp-action="Details" asp-route-id="@r.Id"
                            class="btn btn-sm btn-info mb-1 text-white">
-                           Деталі
+                            Деталі
                         </a>
 
-                        <a href="/ServiceRequest/Edit/@r.Id"
+                        <a asp-controller="ServiceRequest" asp-action="Edit" asp-route-id="@r.Id"
                            class="btn btn-sm btn-outline-primary mb-1">
-                           Редагувати
+                            Редагувати
                         </a>
 
-                        <a href="/ServiceRequest/Delete/@r.Id"
-                           class="btn btn-sm btn-outline-danger"
-                           onclick="return confirm('Видалити заявку?')">
-                           Видалити
-                        </a>
+                        <form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('Видалити заявку?')">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Видалити</button>
+                        </form>
                     </td>
                 </tr>
             }
         </tbody>
-
     </table>
-
 </div>

@@ -23,6 +23,7 @@ public class AccountController : Controller
 
     [HttpPost]
     [AllowAnonymous]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginVM vm)
     {
         if (!ModelState.IsValid)
