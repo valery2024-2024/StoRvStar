@@ -2,7 +2,6 @@ D:\Projects\StoRvStar\bin\Debug\net10.0\appsettings.Development.json
 D:\Projects\StoRvStar\bin\Debug\net10.0\appsettings.json
 D:\Projects\StoRvStar\bin\Debug\net10.0\StoRvStar.staticwebassets.runtime.json
 D:\Projects\StoRvStar\bin\Debug\net10.0\StoRvStar.staticwebassets.endpoints.json
-D:\Projects\StoRvStar\bin\Debug\net10.0\StoRvStar.exe
 D:\Projects\StoRvStar\bin\Debug\net10.0\StoRvStar.deps.json
 D:\Projects\StoRvStar\bin\Debug\net10.0\StoRvStar.runtimeconfig.json
 D:\Projects\StoRvStar\bin\Debug\net10.0\StoRvStar.dll

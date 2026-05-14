@@ -1,18 +1,16 @@
 @model StoRvStar.Models.Entities.ServiceRequest
+@using StoRvStar.Models.Enums
 
 <div class="container mt-4">
-
     <h2 class="mb-4">Деталі заявки №@Model.Id</h2>
 
     <div class="card shadow p-4">
-
         <div class="row">
-
             <div class="col-md-6">
                 <h5>Клієнт</h5>
                 <p>
                     <b>@Model.User?.Name</b><br />
-                       @Model.User?.Phone
+                    @Model.User?.Phone
                 </p>
             </div>
 
@@ -20,16 +18,14 @@
                 <h5>Авто</h5>
                 <p>
                     <b>@Model.Car?.Brand @Model.Car?.Model</b><br />
-                       @Model.Car?.PlateNumber
+                    @Model.Car?.PlateNumber
                 </p>
             </div>
-
         </div>
 
         <hr />
 
         <h5>Послуги</h5>
-
         <table class="table table-bordered mt-2">
             <thead class="table-dark">
                 <tr>
@@ -49,35 +45,31 @@
         </table>
 
         <div class="mt-3">
-            <h4 class="text-success">
-                Загальна сума: @Model.TotalPrice грн
-            </h4>
+            <h4 class="text-success">Загальна сума: @Model.TotalPrice грн</h4>
         </div>
 
         <hr />
         @{
-            string statusText = Model.Status switch
+            var statusText = Model.Status switch
             {
-                "New" => "Нова",
-                "InProgress" => "В роботі",
-                "Done" => "Готово",
-                _ => Model.Status
+                ServiceRequestStatus.New => "Нова",
+                ServiceRequestStatus.InProgress => "В роботі",
+                ServiceRequestStatus.Done => "Готово",
+                _ => Model.Status.ToString()
             };
 
-            string statusClass = Model.Status switch
+            var statusClass = Model.Status switch
             {
-                "New" => "bg-primary",
-                "InProgress" => "bg-warning text-dark",
-                "Done" => "bg-success",
-                 _ => "bg-secondary"
+                ServiceRequestStatus.New => "bg-primary",
+                ServiceRequestStatus.InProgress => "bg-warning text-dark",
+                ServiceRequestStatus.Done => "bg-success",
+                _ => "bg-secondary"
             };
         }
 
         <p>
             <b>Статус:</b>
-            <span class="badge @statusClass">
-                @statusText
-            </span>
+            <span class="badge @statusClass">@statusText</span>
         </p>
 
         <p>
@@ -90,10 +82,6 @@
             @Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")
         </p>
 
-        <a href="/ServiceRequest" class="btn btn-secondary mt-3">
-            Назад
-        </a>
-
+        <a asp-controller="ServiceRequest" asp-action="Index" class="btn btn-secondary mt-3">Назад</a>
     </div>
-
 </div>

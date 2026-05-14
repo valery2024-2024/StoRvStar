@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StoRvStar.Models.Entities;
 using StoRvStar.Models.Identity;
+using StoRvStar.Models.Enums;
 
 namespace StoRvStar.Data;
 
@@ -22,5 +23,10 @@ public class AppDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.Entity<ServiceRequest>()
+            .Property(r => r.Status)
+            .HasConversion<string>()
+            .HasMaxLength(20);
     }
 }

@@ -1,18 +1,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StoRvStar.Models.Enums;
 using StoRvStar.Services.Interfaces;
 using StoRvStar.Models.ViewModels;
-using System.Collections.Generic;
 
 namespace StoRvStar.Controllers;
 
 [Authorize]
 public class ServiceRequestController : Controller
 {
-    private static readonly HashSet<string> AllowedStatuses = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly HashSet<ServiceRequestStatus> AllowedStatuses = new()
     {
-        "InProgress",
-        "Done"
+        ServiceRequestStatus.InProgress,
+        ServiceRequestStatus.Done
     };
 
     private readonly IServiceRequestService _service;
@@ -64,7 +64,17 @@ public class ServiceRequestController : Controller
             return View(vm);
         }
 
-        _service.Create(vm);
+        try
+        {
+            _service.Create(vm);
+        }
+        catch (ArgumentException ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+            PopulateLookups(vm);
+            return View(vm);
+        }
+
         return RedirectToAction("Index");
     }
 
@@ -93,7 +103,18 @@ public class ServiceRequestController : Controller
             return View(vm);
         }
 
-        _service.Update(id, vm);
+        try
+        {
+            _service.Update(id, vm);
+        }
+        catch (ArgumentException ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+            PopulateLookups(vm);
+            ViewBag.Id = id;
+            return View(vm);
+        }
+
         return RedirectToAction("Index");
     }
 
@@ -111,10 +132,11 @@ public class ServiceRequestController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult UpdateStatus(int id, string status)
     {
-        if (string.IsNullOrWhiteSpace(status) || !AllowedStatuses.Contains(status))
+        if (!Enum.TryParse<ServiceRequestStatus>(status, true, out var parsedStatus) ||
+            !AllowedStatuses.Contains(parsedStatus))
             return BadRequest("Некоректний статус");
 
-        _service.UpdateStatus(id, status);
+        _service.UpdateStatus(id, parsedStatus);
         return RedirectToAction("Index");
     }
 
