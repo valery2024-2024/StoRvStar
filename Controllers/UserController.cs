@@ -5,7 +5,7 @@ using StoRvStar.Models.Entities;
 
 namespace StoRvStar.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Manager")]
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
