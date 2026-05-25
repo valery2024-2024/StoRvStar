@@ -6,7 +6,7 @@ using StoRvStar.Models.Entities;
 
 namespace StoRvStar.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin,Manager")]
 public class CarsController : Controller
 {
     private readonly AppDbContext _context;

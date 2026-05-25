@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using StoRvStar.Models.Identity;
 
 namespace StoRvStar.Data;
@@ -9,8 +10,18 @@ public static class IdentitySeeder
     {
         var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var options = serviceProvider.GetRequiredService<IOptions<IdentitySeedOptions>>().Value;
+        var logger = serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("IdentitySeeder");
 
-        string[] roles = { "Admin", "Manager" };
+        if (!options.Enabled)
+        {
+            logger.LogInformation("Identity seed is disabled.");
+            return;
+        }
+
+        var roles = new[] { options.AdminRole, "Manager" }
+            .Where(r => !string.IsNullOrWhiteSpace(r))
+            .Distinct(StringComparer.OrdinalIgnoreCase);
 
         foreach (var role in roles)
         {
@@ -20,10 +31,26 @@ public static class IdentitySeeder
             }
         }
 
-        await CreateUserIfNotExists(userManager, "admin", "admin@storvstar.local", "Admin123!", "Admin");
-        await CreateUserIfNotExists(userManager, "manager1", "manager1@storvstar.local", "Manager123!", "Manager");
-        await CreateUserIfNotExists(userManager, "manager2", "manager2@storvstar.local", "Manager123!", "Manager");
-        await CreateUserIfNotExists(userManager, "manager3", "manager3@storvstar.local", "Manager123!", "Manager");
+        var adminPassword = options.AdminPassword;
+
+        if (string.IsNullOrWhiteSpace(adminPassword))
+        {
+            adminPassword = Environment.GetEnvironmentVariable("STORVSTAR_ADMIN_PASSWORD");
+        }
+
+        if (string.IsNullOrWhiteSpace(adminPassword))
+        {
+            logger.LogWarning("Admin seed password is not configured. Set IdentitySeed:AdminPassword or STORVSTAR_ADMIN_PASSWORD.");
+            return;
+        }
+
+        await CreateUserIfNotExists(
+            userManager,
+            options.AdminUsername,
+            options.AdminEmail,
+            adminPassword,
+            options.AdminRole,
+            logger);
     }
 
     private static async Task CreateUserIfNotExists(
@@ -31,7 +58,8 @@ public static class IdentitySeeder
         string username,
         string email,
         string password,
-        string role)
+        string role,
+        ILogger logger)
     {
         var user = await userManager.FindByNameAsync(username);
 
@@ -46,10 +74,17 @@ public static class IdentitySeeder
 
             var result = await userManager.CreateAsync(user, password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                await userManager.AddToRoleAsync(user, role);
+                var errors = string.Join("; ", result.Errors.Select(e => e.Description));
+                logger.LogWarning("Cannot create seed user {Username}: {Errors}", username, errors);
+                return;
             }
+        }
+
+        if (!await userManager.IsInRoleAsync(user, role))
+        {
+            await userManager.AddToRoleAsync(user, role);
         }
     }
 }

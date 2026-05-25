@@ -6,7 +6,7 @@ using StoRvStar.Models.ViewModels;
 
 namespace StoRvStar.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin,Manager")]
 public class ServiceRequestController : Controller
 {
     private static readonly HashSet<ServiceRequestStatus> AllowedStatuses = new()
